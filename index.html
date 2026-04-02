@@ -404,9 +404,8 @@
 <div class="top-band"></div>
 
 <header>
-  <div class="village-name">🛕 Thirukoilure Bus Stand</div>
-  <h1>Bus Timings</h1>
-  <div class="tamil-title">திருக்கோயிலூர் பேருந்து நேரம்</div>
+  <div class="village-name">🛕 திருக்கோயிலூர் பேருந்து நிலையம்</div>
+  <h1>பேருந்து நேர அட்டவணை</h1>
   <div class="live-clock">
     <div class="clock-display" id="clock">--:--</div>
     <div class="date-display">
@@ -432,7 +431,7 @@
 
 <footer>
   <div class="info-box">
-    <strong>📍 Stop:</strong> Thirukoilure Main Bus Stand<br>
+    <strong>📍 நிறுத்தம்:</strong> திருக்கோயிலூர் பேருந்து நிலையம்<br>
     <strong>📞 Enquiry:</strong> 04153-222222 (Thirukoilure Bus Stand)<br>
     Timings may vary on public holidays
   </div>
@@ -521,42 +520,7 @@
     });
   }
 
-  // Render next bus
-  function renderNextBus(deps) {
-    const container = document.getElementById('nextBusContainer');
-    const next = getNextBus(deps);
-    const now = getNowMins();
 
-    if (!next) {
-      container.innerHTML = `
-        <div class="no-bus-card">
-          <div class="emoji">🌙</div>
-          <h3>No more buses today</h3>
-          <p>Service resumes tomorrow from 05:30 AM</p>
-        </div>`;
-      return;
-    }
-
-    const wait = next.totalMins - now;
-    const { display, ampm } = formatAMPM(next.timeStr);
-    const waitText = wait <= 0 ? 'Now' : `${wait} min${wait > 1 ? 's' : ''}`;
-    const waitLabel = wait <= 0 ? 'Arriving' : 'Away';
-
-    container.innerHTML = `
-      <div class="next-bus-card">
-        <div class="bus-icon-big">🚌</div>
-        <div>
-          <div class="next-label">Next Bus</div>
-          <div class="next-time">${display} <span style="font-size:16px;opacity:0.7">${ampm}</span></div>
-          <div class="next-route">📍 To ${next.to}</div>
-          <div class="next-route" style="margin-top:2px;opacity:0.6">${next.number}</div>
-        </div>
-        <div class="countdown-badge">
-          <div class="countdown-mins">${waitText}</div>
-          <div class="countdown-label">${waitLabel}</div>
-        </div>
-      </div>`;
-  }
 
   // Render bus list
   function renderList(deps) {
@@ -609,25 +573,91 @@
     renderList(deps);
   }
 
-  // Clock
+  // Clock — 12-hour format
   function updateClock() {
     const now = new Date();
-    const h = String(now.getHours()).padStart(2,'0');
+    let h = now.getHours();
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
     const m = String(now.getMinutes()).padStart(2,'0');
     const s = String(now.getSeconds()).padStart(2,'0');
-    document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+    document.getElementById('clock').textContent = `${h}:${m}:${s} ${ampm}`;
 
     const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     document.getElementById('dateStr').textContent =
       `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+    updateCountdown();
+  }
+
+  // Live ticking countdown for next bus
+  function updateCountdown() {
+    const badge = document.getElementById('countdownLive');
+    if (!badge) return;
+    const deps = getFiltered();
+    const next = getNextBus(deps);
+    if (!next) return;
+
+    const now = new Date();
+    const nowTotalSecs = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+    const nextTotalSecs = next.totalMins * 60;
+    const diff = nextTotalSecs - nowTotalSecs;
+
+    if (diff <= 0) {
+      badge.innerHTML = `<div class="countdown-mins">Now</div><div class="countdown-label">Arriving</div>`;
+      // Re-render all once the bus has passed
+      renderAll();
+    } else {
+      const mins = Math.floor(diff / 60);
+      const secs = diff % 60;
+      const label = mins > 0
+        ? `${mins}m ${String(secs).padStart(2,'0')}s`
+        : `${secs}s`;
+      badge.innerHTML = `<div class="countdown-mins" style="font-size:${mins >= 10 ? '20px' : '24px'}">${label}</div><div class="countdown-label">Away</div>`;
+    }
+  }
+
+  // Render next bus (countdown badge has id for live updates)
+  function renderNextBus(deps) {
+    const container = document.getElementById('nextBusContainer');
+    const next = getNextBus(deps);
+
+    if (!next) {
+      container.innerHTML = `
+        <div class="no-bus-card">
+          <div class="emoji">🌙</div>
+          <h3>No more buses today</h3>
+          <p>Service resumes tomorrow from 05:30 AM</p>
+        </div>`;
+      return;
+    }
+
+    const { display, ampm } = formatAMPM(next.timeStr);
+
+    container.innerHTML = `
+      <div class="next-bus-card">
+        <div class="bus-icon-big">🚌</div>
+        <div>
+          <div class="next-label">Next Bus</div>
+          <div class="next-time">${display} <span style="font-size:16px;opacity:0.7">${ampm}</span></div>
+          <div class="next-route">📍 To ${next.to}</div>
+          <div class="next-route" style="margin-top:2px;opacity:0.6">${next.number}</div>
+        </div>
+        <div class="countdown-badge" id="countdownLive">
+          <div class="countdown-mins">...</div>
+          <div class="countdown-label">Away</div>
+        </div>
+      </div>`;
+
+    updateCountdown();
   }
 
   // Init
   renderAll();
   updateClock();
   setInterval(updateClock, 1000);
-  // Re-render bus list every minute (to update NEXT bus)
+  // Re-render full list every minute (to update passed/next states)
   setInterval(renderAll, 60000);
 </script>
 </body>
