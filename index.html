@@ -7,7 +7,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-JE08WRJZTM');
 </script>
 <meta charset="UTF-8">
@@ -37,7 +36,6 @@
     overflow-x: hidden;
   }
 
-  /* Decorative top band */
   .top-band {
     background: var(--saffron);
     height: 6px;
@@ -78,14 +76,6 @@
     text-shadow: 0 2px 8px rgba(0,0,0,0.2);
   }
 
-  .tamil-title {
-    font-family: 'Noto Sans Tamil', sans-serif;
-    font-size: 16px;
-    opacity: 0.85;
-    margin-top: 4px;
-    font-weight: 600;
-  }
-
   .live-clock {
     margin-top: 16px;
     display: flex;
@@ -110,7 +100,6 @@
     line-height: 1.5;
   }
 
-  /* Next Bus Card */
   .next-bus-section {
     padding: 0 16px;
     margin-top: -16px;
@@ -188,7 +177,6 @@
     letter-spacing: 1px;
   }
 
-  /* No bus message */
   .no-bus-card {
     background: var(--deep);
     color: white;
@@ -200,6 +188,54 @@
 
   .no-bus-card .emoji { font-size: 36px; }
   .no-bus-card p { opacity: 0.7; margin-top: 8px; font-size: 14px; }
+
+  /* ===== AD CAROUSEL ===== */
+  .banner-section {
+    padding: 16px 16px 0;
+  }
+
+  .carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  }
+
+  .carousel-track {
+    display: flex;
+    transition: transform 0.6s ease-in-out;
+  }
+
+  .carousel-track img {
+    min-width: 100%;
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ccc;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .dot.active {
+    background: var(--saffron);
+    width: 20px;
+    border-radius: 4px;
+  }
 
   /* Schedule */
   .schedule-section {
@@ -275,10 +311,7 @@
     overflow: hidden;
   }
 
-  .bus-row.passed {
-    opacity: 0.45;
-    filter: grayscale(0.4);
-  }
+  .bus-row.passed { opacity: 0.45; filter: grayscale(0.4); }
 
   .bus-row.next-up {
     border-left-color: var(--saffron);
@@ -286,9 +319,7 @@
     box-shadow: 0 4px 20px rgba(255,107,0,0.2);
   }
 
-  .bus-row.soon {
-    border-left-color: var(--light-green);
-  }
+  .bus-row.soon { border-left-color: var(--light-green); }
 
   .next-up-tag {
     position: absolute;
@@ -303,9 +334,7 @@
     border-bottom-left-radius: 8px;
   }
 
-  .time-block {
-    min-width: 64px;
-  }
+  .time-block { min-width: 64px; }
 
   .bus-time {
     font-size: 22px;
@@ -331,17 +360,8 @@
   }
 
   .bus-info { flex: 1; }
-
-  .bus-number {
-    font-size: 15px;
-    font-weight: 700;
-  }
-
-  .bus-dest {
-    font-size: 12px;
-    color: #666;
-    margin-top: 1px;
-  }
+  .bus-number { font-size: 15px; font-weight: 700; }
+  .bus-dest { font-size: 12px; color: #666; margin-top: 1px; }
 
   .bus-status {
     font-size: 11px;
@@ -356,7 +376,6 @@
   .status-passed { background: #F0F0F0; color: #999; }
   .status-scheduled { background: #EEF0FF; color: #4B55C8; }
 
-  /* Footer */
   footer {
     padding: 20px 16px 32px;
     text-align: center;
@@ -391,7 +410,6 @@
 
   .refresh-btn:active { transform: scale(0.95); }
 
-  /* Pulse dot */
   .pulse-dot {
     width: 10px;
     height: 10px;
@@ -427,11 +445,19 @@
 <div class="next-bus-section">
   <div id="nextBusContainer"></div>
 </div>
-<!-- Murugan Digital Banner -->
-<div style="width: 100%; margin: 20px 0; text-align: center;">
-  <img src="banner.png" 
-       alt="முருகா டிஜிட்டல் - உயர்தர பேனர்கள்" 
-       style="width: 100%; max-width: 1200px; height: auto; border-radius: 8px;">
+
+<!-- Ad Banner Carousel -->
+<div class="banner-section">
+  <div class="carousel">
+    <div class="carousel-track" id="carouselTrack">
+      <img src="banner.png"  alt="Ad 1">
+      <img src="banner2.png.jpeg" alt="Ad 2">
+    </div>
+  </div>
+  <div class="carousel-dots">
+    <div class="dot active" onclick="goToSlide(0)"></div>
+    <div class="dot"        onclick="goToSlide(1)"></div>
+  </div>
 </div>
 
 <div class="schedule-section">
@@ -439,7 +465,6 @@
     <div class="section-title">📅 Today's Schedule</div>
     <div class="section-line"></div>
   </div>
-
   <div class="route-tabs" id="routeTabs"></div>
   <div class="bus-list" id="busList"></div>
 </div>
@@ -454,7 +479,24 @@
 </footer>
 
 <script>
-  // ===== BUS DATA - Thirukoilure Bus Stand =====
+  // ===== CAROUSEL =====
+  let currentSlide = 0;
+  const totalSlides = 2;
+
+  function goToSlide(index) {
+    currentSlide = index;
+    document.getElementById('carouselTrack').style.transform = `translateX(-${index * 100}%)`;
+    document.querySelectorAll('.dot').forEach((d, i) => {
+      d.classList.toggle('active', i === index);
+    });
+  }
+
+  // Auto slide every 4 seconds
+  setInterval(() => {
+    goToSlide((currentSlide + 1) % totalSlides);
+  }, 4000);
+
+  // ===== BUS DATA =====
   const routes = {
     "All": null,
     "Chennai": "Chennai",
@@ -475,19 +517,12 @@
     { number: "TN 32 N 0707", route: "Chennai",      from: "Thirukoilure", to: "Chennai CMBT (Express)",     times: ["06:30", "09:00", "12:30", "15:00", "18:00", "21:00"] },
   ];
 
-  // Flatten all departures into one list
   function getAllDepartures() {
     const all = [];
     buses.forEach(bus => {
       bus.times.forEach(t => {
         const [h, m] = t.split(':').map(Number);
-        all.push({
-          number: bus.number,
-          route: bus.route,
-          to: bus.to,
-          timeStr: t,
-          totalMins: h * 60 + m
-        });
+        all.push({ number: bus.number, route: bus.route, to: bus.to, timeStr: t, totalMins: h * 60 + m });
       });
     });
     all.sort((a, b) => a.totalMins - b.totalMins);
@@ -519,7 +554,6 @@
     return deps.find(d => d.totalMins > now) || null;
   }
 
-  // Render tabs
   function renderTabs() {
     const container = document.getElementById('routeTabs');
     container.innerHTML = '';
@@ -527,17 +561,11 @@
       const tab = document.createElement('div');
       tab.className = 'tab' + (r === activeRoute ? ' active' : '');
       tab.textContent = r === "All" ? "🚌 All Routes" : `📍 ${r}`;
-      tab.onclick = () => {
-        activeRoute = r;
-        renderAll();
-      };
+      tab.onclick = () => { activeRoute = r; renderAll(); };
       container.appendChild(tab);
     });
   }
 
-
-
-  // Render bus list
   function renderList(deps) {
     const container = document.getElementById('busList');
     const now = getNowMins();
@@ -556,13 +584,12 @@
       const isSoon = !passed && !isNext && wait <= 60;
 
       let statusClass, statusText;
-      if (passed) { statusClass = 'status-passed'; statusText = '✓ Departed'; }
-      else if (isNext) { statusClass = 'status-next'; statusText = '⏭ NEXT'; }
-      else if (isSoon) { statusClass = 'status-soon'; statusText = `~${wait}m`; }
-      else { statusClass = 'status-scheduled'; statusText = 'Scheduled'; }
+      if (passed)       { statusClass = 'status-passed';    statusText = '✓ Departed'; }
+      else if (isNext)  { statusClass = 'status-next';      statusText = '⏭ NEXT'; }
+      else if (isSoon)  { statusClass = 'status-soon';      statusText = `~${wait}m`; }
+      else              { statusClass = 'status-scheduled'; statusText = 'Scheduled'; }
 
       const { display, ampm } = formatAMPM(dep.timeStr);
-
       const row = document.createElement('div');
       row.className = `bus-row${passed ? ' passed' : ''}${isNext ? ' next-up' : ''}${isSoon ? ' soon' : ''}`;
       row.innerHTML = `
@@ -588,7 +615,6 @@
     renderList(deps);
   }
 
-  // Clock — 12-hour format
   function updateClock() {
     const now = new Date();
     let h = now.getHours();
@@ -597,47 +623,36 @@
     const m = String(now.getMinutes()).padStart(2,'0');
     const s = String(now.getSeconds()).padStart(2,'0');
     document.getElementById('clock').textContent = `${h}:${m}:${s} ${ampm}`;
-
     const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     document.getElementById('dateStr').textContent =
       `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
-
     updateCountdown();
   }
 
-  // Live ticking countdown for next bus
   function updateCountdown() {
     const badge = document.getElementById('countdownLive');
     if (!badge) return;
     const deps = getFiltered();
     const next = getNextBus(deps);
     if (!next) return;
-
     const now = new Date();
     const nowTotalSecs = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
-    const nextTotalSecs = next.totalMins * 60;
-    const diff = nextTotalSecs - nowTotalSecs;
-
+    const diff = next.totalMins * 60 - nowTotalSecs;
     if (diff <= 0) {
       badge.innerHTML = `<div class="countdown-mins">Now</div><div class="countdown-label">Arriving</div>`;
-      // Re-render all once the bus has passed
       renderAll();
     } else {
       const mins = Math.floor(diff / 60);
       const secs = diff % 60;
-      const label = mins > 0
-        ? `${mins}m ${String(secs).padStart(2,'0')}s`
-        : `${secs}s`;
+      const label = mins > 0 ? `${mins}m ${String(secs).padStart(2,'0')}s` : `${secs}s`;
       badge.innerHTML = `<div class="countdown-mins" style="font-size:${mins >= 10 ? '20px' : '24px'}">${label}</div><div class="countdown-label">Away</div>`;
     }
   }
 
-  // Render next bus (countdown badge has id for live updates)
   function renderNextBus(deps) {
     const container = document.getElementById('nextBusContainer');
     const next = getNextBus(deps);
-
     if (!next) {
       container.innerHTML = `
         <div class="no-bus-card">
@@ -647,9 +662,7 @@
         </div>`;
       return;
     }
-
     const { display, ampm } = formatAMPM(next.timeStr);
-
     container.innerHTML = `
       <div class="next-bus-card">
         <div class="bus-icon-big">🚌</div>
@@ -664,17 +677,15 @@
           <div class="countdown-label">Away</div>
         </div>
       </div>`;
-
     updateCountdown();
   }
 
-  // Init
   renderAll();
   updateClock();
   setInterval(updateClock, 1000);
-  // Re-render full list every minute (to update passed/next states)
   setInterval(renderAll, 60000);
 </script>
+
 <!-- Footer -->
 <footer style="background-color: #1a1a2e; color: #ffffff; text-align: center; padding: 20px; margin-top: 40px; font-family: 'Noto Sans Tamil', sans-serif;">
   <p style="margin: 0; font-size: 15px;">Designed & Developed by</p>
