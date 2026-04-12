@@ -13,13 +13,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Thirukoilure Bus Timings</title>
 
-<!-- PWA Support -->
+<!-- ===== PWA ===== -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#FF6B00">
-<link rel="apple-touch-icon" href="icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Bus Timing">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" type="image/png" href="icon.png">
+<!-- ===== END PWA ===== -->
 
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -198,45 +200,10 @@
   .no-bus-card .emoji { font-size: 36px; }
   .no-bus-card p { opacity: 0.7; margin-top: 8px; font-size: 14px; }
 
-  /* Install Banner */
-  .install-banner {
-    display: none;
-    margin: 16px 16px 0;
-    background: linear-gradient(135deg, #1A0A00, #3a1500);
-    color: white;
-    border-radius: 14px;
-    padding: 14px 16px;
-    align-items: center;
-    gap: 12px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  /* ===== AD CAROUSEL ===== */
+  .banner-section {
+    padding: 16px 16px 0;
   }
-
-  .install-banner.show { display: flex; }
-
-  .install-banner img {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-  }
-
-  .install-banner-text { flex: 1; }
-  .install-banner-text strong { font-size: 14px; display: block; }
-  .install-banner-text span { font-size: 12px; opacity: 0.7; }
-
-  .install-btn {
-    background: var(--saffron);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 10px;
-    font-weight: 700;
-    font-size: 13px;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-
-  /* AD CAROUSEL */
-  .banner-section { padding: 16px 16px 0; }
 
   .carousel {
     position: relative;
@@ -281,7 +248,10 @@
     border-radius: 4px;
   }
 
-  .schedule-section { padding: 24px 16px 16px; }
+  /* Schedule */
+  .schedule-section {
+    padding: 24px 16px 16px;
+  }
 
   .section-header {
     display: flex;
@@ -290,7 +260,10 @@
     margin-bottom: 16px;
   }
 
-  .section-title { font-size: 18px; font-weight: 800; }
+  .section-title {
+    font-size: 18px;
+    font-weight: 800;
+  }
 
   .section-line {
     flex: 1;
@@ -329,7 +302,11 @@
     border-color: var(--saffron);
   }
 
-  .bus-list { display: flex; flex-direction: column; gap: 10px; }
+  .bus-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 
   .bus-row {
     background: var(--card);
@@ -370,22 +347,50 @@
 
   .time-block { min-width: 64px; }
 
-  .bus-time { font-size: 22px; font-weight: 800; line-height: 1; color: var(--deep); }
-  .bus-ampm { font-size: 11px; font-weight: 600; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px; }
+  .bus-time {
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--deep);
+  }
 
-  .divider-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+  .bus-ampm {
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .divider-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
 
   .bus-info { flex: 1; }
   .bus-number { font-size: 15px; font-weight: 700; }
   .bus-dest { font-size: 12px; color: #666; margin-top: 1px; }
 
-  .bus-status { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 8px; letter-spacing: 0.5px; }
+  .bus-status {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+  }
+
   .status-next { background: #FFF0E0; color: var(--saffron); }
   .status-soon { background: #E8F5EE; color: var(--green); }
   .status-passed { background: #F0F0F0; color: #999; }
   .status-scheduled { background: #EEF0FF; color: #4B55C8; }
 
-  footer { padding: 20px 16px 32px; text-align: center; }
+  footer {
+    padding: 20px 16px 32px;
+    text-align: center;
+  }
 
   .info-box {
     background: white;
@@ -452,22 +457,12 @@
   <div id="nextBusContainer"></div>
 </div>
 
-<!-- Install App Banner -->
-<div class="install-banner" id="installBanner">
-  <img src="icon.png" alt="App Icon">
-  <div class="install-banner-text">
-    <strong>Install as App</strong>
-    <span>Add to home screen for quick access</span>
-  </div>
-  <button class="install-btn" id="installBtn">Install</button>
-</div>
-
 <!-- Ad Banner Carousel -->
 <div class="banner-section">
   <div class="carousel">
     <div class="carousel-track" id="carouselTrack">
-      <img src="banner.png" alt="Ad 1">
-      <img src="banner2.png" alt="Ad 2">
+      <img src="banner.png.jpeg" alt="Ad 1">
+      <img src="banner2.png.jpeg" alt="Ad 2">
     </div>
   </div>
   <div class="carousel-dots">
@@ -495,28 +490,10 @@
 </footer>
 
 <script>
-  // ===== PWA INSTALL PROMPT =====
-  let deferredPrompt;
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    document.getElementById('installBanner').classList.add('show');
-  });
-
-  document.getElementById('installBtn').addEventListener('click', async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        document.getElementById('installBanner').classList.remove('show');
-      }
-      deferredPrompt = null;
-    }
-  });
-
-  window.addEventListener('appinstalled', () => {
-    document.getElementById('installBanner').classList.remove('show');
-  });
+  // ===== PWA Service Worker =====
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
 
   // ===== CAROUSEL =====
   let currentSlide = 0;
@@ -530,7 +507,9 @@
     });
   }
 
-  setInterval(() => { goToSlide((currentSlide + 1) % totalSlides); }, 4000);
+  setInterval(() => {
+    goToSlide((currentSlide + 1) % totalSlides);
+  }, 4000);
 
   // ===== BUS DATA =====
   const routes = {
@@ -544,13 +523,13 @@
   };
 
   const buses = [
-    { number: "TN 32 N 0101", route: "Chennai",      from: "Thirukoilure", to: "Chennai Koyambedu",         times: ["04:30", "05:15", "06:00", "07:00", "08:30", "10:00", "11:30", "13:00", "14:30", "16:00", "17:30", "19:00", "20:30", "22:00"] },
-    { number: "TN 32 N 0202", route: "Villupuram",   from: "Thirukoilure", to: "Villupuram Bus Stand",       times: ["05:00", "05:45", "06:30", "07:15", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"] },
-    { number: "TN 32 N 0303", route: "Pondicherry",  from: "Thirukoilure", to: "Pondicherry New Bus Stand",  times: ["05:30", "07:00", "09:30", "11:00", "13:30", "15:00", "17:30", "19:30", "21:30"] },
-    { number: "TN 32 N 0404", route: "Salem",        from: "Thirukoilure", to: "Salem Bus Stand",            times: ["05:00", "07:30", "09:00", "11:30", "14:00", "16:30", "18:30", "20:30"] },
-    { number: "TN 32 N 0505", route: "Ulundurpet",   from: "Thirukoilure", to: "Ulundurpet",                 times: ["06:00", "07:30", "09:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00", "19:30", "21:00"] },
-    { number: "TN 32 N 0606", route: "Kallakurichi", from: "Thirukoilure", to: "Kallakurichi Bus Stand",     times: ["05:30", "06:30", "08:00", "09:30", "11:00", "12:30", "14:00", "15:30", "17:00", "18:30", "20:00"] },
-    { number: "TN 32 N 0707", route: "Chennai",      from: "Thirukoilure", to: "Chennai CMBT (Express)",     times: ["06:30", "09:00", "12:30", "15:00", "18:00", "21:00"] },
+    { number: "TN 32 N Chn", route: "Chennai",      from: "Thirukoilure", to: "Chennai",                   times: ["04:30", "05:15", "06:00", "07:00", "08:30", "10:00", "11:30", "13:00", "14:30", "16:00", "17:30", "19:00", "20:30", "22:00"] },
+    { number: "TN 32 N Vpm", route: "Villupuram",   from: "Thirukoilure", to: "Villupuram Bus Stand",       times: ["05:00", "05:45", "06:30", "07:15", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"] },
+    { number: "TN 32 N Pdc", route: "Pondicherry",  from: "Thirukoilure", to: "Pondicherry New Bus Stand",  times: ["05:30", "07:00", "09:30", "11:00", "13:30", "15:00", "17:30", "19:30", "21:30"] },
+    { number: "TN 32 N Slm", route: "Salem",        from: "Thirukoilure", to: "Salem Bus Stand",            times: ["05:00", "07:30", "09:00", "11:30", "14:00", "16:30", "18:30", "20:30"] },
+    { number: "TN 32 N Udp", route: "Ulundurpet",   from: "Thirukoilure", to: "Ulundurpet",                 times: ["06:00", "07:30", "09:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00", "19:30", "21:00"] },
+    { number: "TN 32 N Kki", route: "Kallakurichi", from: "Thirukoilure", to: "Kallakurichi Bus Stand",     times: ["05:30", "06:30", "08:00", "09:30", "11:00", "12:30", "14:00", "15:30", "17:00", "18:30", "20:00"] },
+    { number: "TN 32 N Chn", route: "Chennai",      from: "Thirukoilure", to: "Chennai CMBT (Express)",     times: ["06:30", "09:00", "12:30", "15:00", "18:00", "21:00"] },
   ];
 
   function getAllDepartures() {
@@ -724,6 +703,7 @@
 
 <!-- Footer -->
 <footer style="background-color: #1a1a2e; color: #ffffff; text-align: center; padding: 20px; margin-top: 40px; font-family: 'Noto Sans Tamil', sans-serif;">
+  <p style="margin: 0 0 10px 0; font-size: 14px; color: #C1121F;">The NC Group Product</p>
   <p style="margin: 0; font-size: 15px;">Designed & Developed by</p>
   <p style="margin: 6px 0; font-size: 18px; font-weight: bold; color: #FFB347;">Chandru SK</p>
   <p style="margin: 0 0 10px 0; font-size: 14px; color: #cccccc;">B.Tech CSE</p>
