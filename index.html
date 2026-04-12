@@ -13,7 +13,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Thirukoilure Bus Timings</title>
 
-<!-- ===== PWA ===== -->
+<!-- PWA -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#FF6B00">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -21,7 +21,6 @@
 <meta name="apple-mobile-web-app-title" content="Bus Timing">
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="icon" type="image/png" href="icon.png">
-<!-- ===== END PWA ===== -->
 
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -47,10 +46,81 @@
     overflow-x: hidden;
   }
 
-  .top-band {
+  /* ===== INSTALL BANNER ===== */
+  #installBanner {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #1A0A00, #2d1200);
+    color: white;
+    padding: 14px 16px;
+    z-index: 9999;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
+    animation: slideUp 0.4s ease;
+  }
+
+  @keyframes slideUpBanner {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .install-banner-inner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .install-icon {
+    font-size: 36px;
+    flex-shrink: 0;
+  }
+
+  .install-text { flex: 1; }
+
+  .install-text strong {
+    display: block;
+    font-size: 15px;
+    color: var(--gold);
+  }
+
+  .install-text span {
+    font-size: 12px;
+    opacity: 0.75;
+  }
+
+  .install-btn {
     background: var(--saffron);
-    height: 6px;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(255,107,0,0.4);
+    flex-shrink: 0;
+  }
+
+  .install-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0.6;
+    padding: 4px;
+    flex-shrink: 0;
+  }
+
+  .top-band {
     background: repeating-linear-gradient(90deg, var(--saffron) 0px, var(--saffron) 20px, var(--gold) 20px, var(--gold) 40px, var(--green) 40px, var(--green) 60px);
+    height: 6px;
   }
 
   header {
@@ -135,10 +205,7 @@
     to { transform: translateY(0); opacity: 1; }
   }
 
-  .bus-icon-big {
-    font-size: 44px;
-    animation: bounce 2s infinite;
-  }
+  .bus-icon-big { font-size: 44px; animation: bounce 2s infinite; }
 
   @keyframes bounce {
     0%, 100% { transform: translateY(0); }
@@ -160,11 +227,7 @@
     line-height: 1;
   }
 
-  .next-route {
-    font-size: 13px;
-    opacity: 0.75;
-    margin-top: 4px;
-  }
+  .next-route { font-size: 13px; opacity: 0.75; margin-top: 4px; }
 
   .countdown-badge {
     margin-left: auto;
@@ -175,18 +238,8 @@
     min-width: 80px;
   }
 
-  .countdown-mins {
-    font-size: 24px;
-    font-weight: 800;
-    line-height: 1;
-  }
-
-  .countdown-label {
-    font-size: 10px;
-    opacity: 0.85;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
+  .countdown-mins { font-size: 24px; font-weight: 800; line-height: 1; }
+  .countdown-label { font-size: 10px; opacity: 0.85; text-transform: uppercase; letter-spacing: 1px; }
 
   .no-bus-card {
     background: var(--deep);
@@ -200,10 +253,7 @@
   .no-bus-card .emoji { font-size: 36px; }
   .no-bus-card p { opacity: 0.7; margin-top: 8px; font-size: 14px; }
 
-  /* ===== AD CAROUSEL ===== */
-  .banner-section {
-    padding: 16px 16px 0;
-  }
+  .banner-section { padding: 16px 16px 0; }
 
   .carousel {
     position: relative;
@@ -213,10 +263,7 @@
     box-shadow: 0 4px 16px rgba(0,0,0,0.15);
   }
 
-  .carousel-track {
-    display: flex;
-    transition: transform 0.6s ease-in-out;
-  }
+  .carousel-track { display: flex; transition: transform 0.6s ease-in-out; }
 
   .carousel-track img {
     min-width: 100%;
@@ -226,208 +273,97 @@
     object-fit: cover;
   }
 
-  .carousel-dots {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 10px;
-  }
+  .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 10px; }
 
   .dot {
-    width: 8px;
-    height: 8px;
+    width: 8px; height: 8px;
     border-radius: 50%;
     background: #ccc;
     cursor: pointer;
     transition: all 0.3s;
   }
 
-  .dot.active {
-    background: var(--saffron);
-    width: 20px;
-    border-radius: 4px;
-  }
+  .dot.active { background: var(--saffron); width: 20px; border-radius: 4px; }
 
-  /* Schedule */
-  .schedule-section {
-    padding: 24px 16px 16px;
-  }
+  .schedule-section { padding: 24px 16px 16px; }
 
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-
-  .section-title {
-    font-size: 18px;
-    font-weight: 800;
-  }
-
-  .section-line {
-    flex: 1;
-    height: 2px;
-    background: linear-gradient(90deg, var(--saffron), transparent);
-    border-radius: 2px;
-  }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .section-title { font-size: 18px; font-weight: 800; }
+  .section-line { flex: 1; height: 2px; background: linear-gradient(90deg, var(--saffron), transparent); border-radius: 2px; }
 
   .route-tabs {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
-    overflow-x: auto;
-    padding-bottom: 4px;
-    scrollbar-width: none;
+    display: flex; gap: 8px; margin-bottom: 16px;
+    overflow-x: auto; padding-bottom: 4px; scrollbar-width: none;
   }
   .route-tabs::-webkit-scrollbar { display: none; }
 
   .tab {
-    flex-shrink: 0;
-    padding: 7px 16px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    border: 2px solid transparent;
-    background: white;
-    color: var(--deep);
-    transition: all 0.2s;
+    flex-shrink: 0; padding: 7px 16px; border-radius: 20px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    border: 2px solid transparent; background: white;
+    color: var(--deep); transition: all 0.2s;
     box-shadow: 0 2px 8px var(--shadow);
   }
 
-  .tab.active {
-    background: var(--saffron);
-    color: white;
-    border-color: var(--saffron);
-  }
+  .tab.active { background: var(--saffron); color: white; border-color: var(--saffron); }
 
-  .bus-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+  .bus-list { display: flex; flex-direction: column; gap: 10px; }
 
   .bus-row {
-    background: var(--card);
-    border-radius: 14px;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    box-shadow: 0 2px 12px var(--shadow);
-    border-left: 4px solid transparent;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
+    background: var(--card); border-radius: 14px; padding: 14px 16px;
+    display: flex; align-items: center; gap: 14px;
+    box-shadow: 0 2px 12px var(--shadow); border-left: 4px solid transparent;
+    transition: all 0.3s; position: relative; overflow: hidden;
   }
 
   .bus-row.passed { opacity: 0.45; filter: grayscale(0.4); }
-
   .bus-row.next-up {
     border-left-color: var(--saffron);
     background: linear-gradient(135deg, #FFF3E8 0%, var(--card) 100%);
     box-shadow: 0 4px 20px rgba(255,107,0,0.2);
   }
-
   .bus-row.soon { border-left-color: var(--light-green); }
 
   .next-up-tag {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background: var(--saffron);
-    color: white;
-    font-size: 9px;
-    font-weight: 700;
-    padding: 3px 10px;
-    letter-spacing: 1px;
-    border-bottom-left-radius: 8px;
+    position: absolute; top: 0; right: 0;
+    background: var(--saffron); color: white;
+    font-size: 9px; font-weight: 700; padding: 3px 10px;
+    letter-spacing: 1px; border-bottom-left-radius: 8px;
   }
 
   .time-block { min-width: 64px; }
-
-  .bus-time {
-    font-size: 22px;
-    font-weight: 800;
-    line-height: 1;
-    color: var(--deep);
-  }
-
-  .bus-ampm {
-    font-size: 11px;
-    font-weight: 600;
-    opacity: 0.5;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .divider-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--gold);
-    flex-shrink: 0;
-  }
-
+  .bus-time { font-size: 22px; font-weight: 800; line-height: 1; color: var(--deep); }
+  .bus-ampm { font-size: 11px; font-weight: 600; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px; }
+  .divider-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
   .bus-info { flex: 1; }
   .bus-number { font-size: 15px; font-weight: 700; }
   .bus-dest { font-size: 12px; color: #666; margin-top: 1px; }
 
-  .bus-status {
-    font-size: 11px;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 8px;
-    letter-spacing: 0.5px;
-  }
-
+  .bus-status { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 8px; letter-spacing: 0.5px; }
   .status-next { background: #FFF0E0; color: var(--saffron); }
   .status-soon { background: #E8F5EE; color: var(--green); }
   .status-passed { background: #F0F0F0; color: #999; }
   .status-scheduled { background: #EEF0FF; color: #4B55C8; }
 
-  footer {
-    padding: 20px 16px 32px;
-    text-align: center;
-  }
+  footer { padding: 20px 16px 100px; text-align: center; }
 
   .info-box {
-    background: white;
-    border-radius: 14px;
-    padding: 14px;
-    box-shadow: 0 2px 12px var(--shadow);
-    font-size: 12px;
-    color: #777;
-    line-height: 1.7;
+    background: white; border-radius: 14px; padding: 14px;
+    box-shadow: 0 2px 12px var(--shadow); font-size: 12px; color: #777; line-height: 1.7;
   }
-
   .info-box strong { color: var(--saffron); }
 
   .refresh-btn {
-    margin-top: 14px;
-    background: var(--saffron);
-    color: white;
-    border: none;
-    padding: 10px 28px;
-    border-radius: 20px;
-    font-family: 'Baloo 2', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 4px 14px rgba(255,107,0,0.35);
-    transition: transform 0.2s;
+    margin-top: 14px; background: var(--saffron); color: white;
+    border: none; padding: 10px 28px; border-radius: 20px;
+    font-family: 'Baloo 2', sans-serif; font-size: 14px; font-weight: 700;
+    cursor: pointer; box-shadow: 0 4px 14px rgba(255,107,0,0.35); transition: transform 0.2s;
   }
-
   .refresh-btn:active { transform: scale(0.95); }
 
   .pulse-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #4CAF50;
-    display: inline-block;
-    animation: pulse 1.5s infinite;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #4CAF50; display: inline-block; animation: pulse 1.5s infinite;
   }
 
   @keyframes pulse {
@@ -438,6 +374,19 @@
 </style>
 </head>
 <body>
+
+<!-- ===== INSTALL BANNER ===== -->
+<div id="installBanner">
+  <div class="install-banner-inner">
+    <div class="install-icon">🚌</div>
+    <div class="install-text">
+      <strong>Install Bus Timing App</strong>
+      <span>Add to home screen for quick access!</span>
+    </div>
+    <button class="install-btn" id="installBtn">Install</button>
+    <button class="install-close" id="closeBanner">✕</button>
+  </div>
+</div>
 
 <div class="top-band"></div>
 
@@ -495,6 +444,34 @@
     navigator.serviceWorker.register('sw.js').catch(() => {});
   }
 
+  // ===== INSTALL BANNER =====
+  let deferredPrompt;
+  const banner  = document.getElementById('installBanner');
+  const installBtn = document.getElementById('installBtn');
+  const closeBtn   = document.getElementById('closeBanner');
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    banner.style.display = 'block';
+  });
+
+  installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') banner.style.display = 'none';
+    deferredPrompt = null;
+  });
+
+  closeBtn.addEventListener('click', () => {
+    banner.style.display = 'none';
+  });
+
+  window.addEventListener('appinstalled', () => {
+    banner.style.display = 'none';
+  });
+
   // ===== CAROUSEL =====
   let currentSlide = 0;
   const totalSlides = 2;
@@ -507,9 +484,7 @@
     });
   }
 
-  setInterval(() => {
-    goToSlide((currentSlide + 1) % totalSlides);
-  }, 4000);
+  setInterval(() => { goToSlide((currentSlide + 1) % totalSlides); }, 4000);
 
   // ===== BUS DATA =====
   const routes = {
@@ -523,13 +498,13 @@
   };
 
   const buses = [
-    { number: "TN 32 N Chn", route: "Chennai",      from: "Thirukoilure", to: "Chennai",                   times: ["04:30", "05:15", "06:00", "07:00", "08:30", "10:00", "11:30", "13:00", "14:30", "16:00", "17:30", "19:00", "20:30", "22:00"] },
-    { number: "TN 32 N Vpm", route: "Villupuram",   from: "Thirukoilure", to: "Villupuram Bus Stand",       times: ["05:00", "05:45", "06:30", "07:15", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"] },
-    { number: "TN 32 N Pdc", route: "Pondicherry",  from: "Thirukoilure", to: "Pondicherry New Bus Stand",  times: ["05:30", "07:00", "09:30", "11:00", "13:30", "15:00", "17:30", "19:30", "21:30"] },
-    { number: "TN 32 N Slm", route: "Salem",        from: "Thirukoilure", to: "Salem Bus Stand",            times: ["05:00", "07:30", "09:00", "11:30", "14:00", "16:30", "18:30", "20:30"] },
-    { number: "TN 32 N Udp", route: "Ulundurpet",   from: "Thirukoilure", to: "Ulundurpet",                 times: ["06:00", "07:30", "09:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00", "19:30", "21:00"] },
-    { number: "TN 32 N Kki", route: "Kallakurichi", from: "Thirukoilure", to: "Kallakurichi Bus Stand",     times: ["05:30", "06:30", "08:00", "09:30", "11:00", "12:30", "14:00", "15:30", "17:00", "18:30", "20:00"] },
-    { number: "TN 32 N Chn", route: "Chennai",      from: "Thirukoilure", to: "Chennai CMBT (Express)",     times: ["06:30", "09:00", "12:30", "15:00", "18:00", "21:00"] },
+    { number: "TN 32 N Chn", route: "Chennai",      from: "Thirukoilure", to: "Chennai",                  times: ["04:30", "05:15", "06:00", "07:00", "08:30", "10:00", "11:30", "13:00", "14:30", "16:00", "17:30", "19:00", "20:30", "22:00"] },
+    { number: "TN 32 N Vpm", route: "Villupuram",   from: "Thirukoilure", to: "Villupuram Bus Stand",      times: ["05:00", "05:45", "06:30", "07:15", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"] },
+    { number: "TN 32 N Pdc", route: "Pondicherry",  from: "Thirukoilure", to: "Pondicherry New Bus Stand", times: ["05:30", "07:00", "09:30", "11:00", "13:30", "15:00", "17:30", "19:30", "21:30"] },
+    { number: "TN 32 N Slm", route: "Salem",        from: "Thirukoilure", to: "Salem Bus Stand",           times: ["05:00", "07:30", "09:00", "11:30", "14:00", "16:30", "18:30", "20:30"] },
+    { number: "TN 32 N Udp", route: "Ulundurpet",   from: "Thirukoilure", to: "Ulundurpet",                times: ["06:00", "07:30", "09:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00", "19:30", "21:00"] },
+    { number: "TN 32 N Kki", route: "Kallakurichi", from: "Thirukoilure", to: "Kallakurichi Bus Stand",    times: ["05:30", "06:30", "08:00", "09:30", "11:00", "12:30", "14:00", "15:30", "17:00", "18:30", "20:00"] },
+    { number: "TN 32 N Chn", route: "Chennai",      from: "Thirukoilure", to: "Chennai CMBT (Express)",    times: ["06:30", "09:00", "12:30", "15:00", "18:00", "21:00"] },
   ];
 
   function getAllDepartures() {
@@ -544,10 +519,7 @@
     return all;
   }
 
-  function getNowMins() {
-    const now = new Date();
-    return now.getHours() * 60 + now.getMinutes();
-  }
+  function getNowMins() { const now = new Date(); return now.getHours() * 60 + now.getMinutes(); }
 
   function formatAMPM(timeStr) {
     const [h, m] = timeStr.split(':').map(Number);
