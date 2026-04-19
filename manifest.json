@@ -1,6 +1,6 @@
 {
-  "name": "திருக்கோயிலூர் பேருந்து நேரம்",
-  "short_name": "Bus Timing",
+  "name": "Bus Timing @ TRK",
+  "short_name": "Bus timing @ TRK",
   "start_url": "/Thirukoilure-bus-timing-website/",
   "display": "standalone",
   "background_color": "#FFF8EF",
